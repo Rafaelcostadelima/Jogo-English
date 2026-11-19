@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will vs. Going To — Jogo Interativo de Inglês</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --will-color: #3b82f6;
+      --will-bg: #eff6ff;
+      --going-color: #8b5cf6;
+      --going-bg: #f5f3ff;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --error: #ef4444;
+      --error-bg: #fef2f2;
+      --accent: #f59e0b;
+      --shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.12);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 50%, #f0fdf4 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 40px;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--will-color), var(--going-color));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: block;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .icon-btn:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    /* Card Base */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Start Screen */
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .hero h2 {
+      font-size: 1.75rem;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    @media (max-width: 600px) {
+      .rules-grid {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 20px;
+      }
+    }
+
+    .rule-box {
+      padding: 18px;
+      border-radius: 14px;
+      border: 2px solid transparent;
+    }
+
+    .rule-box.will {
+      background: var(--will-bg);
+      border-color: #bfdbfe;
+    }
+
+    .rule-box.going {
+      background: var(--going-bg);
+      border-color: #ddd6fe;
+    }
+
+    .rule-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .will .rule-badge { background: var(--will-color); }
+    .going .rule-badge { background: var(--going-color); }
+
+    .rule-box ul {
+      list-style: none;
+      font-size: 0.92rem;
+    }
+
+    .rule-box li {
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .rule-box li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    .will li::before { color: var(--will-color); }
+    .going li::before { color: var(--going-color); }
+
+    .example-mini {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(0, 0, 0, 0.1);
+      font-size: 0.86rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .mode-selector {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--will-color), var(--going-color));
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    /* Game Screen */
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .streak-pill.active {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #b45309;
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--will-color), var(--going-color));
+      width: 0%;
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .context-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .context-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #b45309;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .sentence-box {
+      font-size: 1.45rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 20px 10px;
+      margin-bottom: 24px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .blank {
+      display: inline-block;
+      min-width: 130px;
+      padding: 2px 12px;
+      border-bottom: 3px dashed #94a3b8;
+      color: var(--muted);
+      margin: 0 4px;
+      transition: all 0.25s;
+      border-radius: 6px;
+    }
+
+    .blank.filled-correct {
+      background: var(--success-bg);
+      color: #065f46;
+      border-bottom: 3px solid var(--success);
+    }
+
+    .blank.filled-wrong {
+      background: var(--error-bg);
+      color: #991b1b;
+      border-bottom: 3px solid var(--error);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 500px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      .sentence-box {
+        font-size: 1.25rem;
+      }
+    }
+
+    .option-btn {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 16px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #94a3b8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-key {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #065f46;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--error);
+      background: var(--error-bg);
+      color: #991b1b;
+      animation: shake 0.35s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    /* Feedback Box */
+    .feedback-box {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 14px;
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background: var(--success-bg);
+      border: 1px solid #a7f3d0;
+    }
+
+    .feedback-box.wrong {
+      background: var(--error-bg);
+      border: 1px solid #fecaca;
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .feedback-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    .feedback-box.correct .feedback-title { color: #047857; }
+    .feedback-box.wrong .feedback-title { color: #b91c1c; }
+
+    .speak-btn {
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .speak-btn:hover {
+      background: #f8fafc;
+    }
+
+    .feedback-rule {
+      font-size: 0.95rem;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+
+    .translation {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 14px;
+    }
+
+    .next-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      background: var(--text);
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .next-btn:hover {
+      background: #0f172a;
+    }
+
+    /* End Screen */
+    .result-hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .trophy {
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .score-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 16px 10px;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .score-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .score-lbl {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .review-list {
+      margin-top: 22px;
+      text-align: left;
+    }
+
+    .review-list h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .review-item {
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .review-item strong {
+      color: #065f46;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      place-items: center;
+      padding: 16px;
+      z-index: 100;
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-backdrop.open {
+      display: grid;
+    }
+
+    .modal-content {
+      background: white;
+      max-width: 650px;
+      width: 100%;
+      border-radius: 18px;
+      padding: 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .close-modal {
+      background: #f1f5f9;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .shortcut-hint {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Cabeçalho -->
+    <header>
+      <div class="brand">
+        <div class="logo">W/G</div>
+        <div>
+          <h1>Will vs. Going To</h1>
+          <span>Domine o futuro em inglês jogando</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="openGuideBtn" title="Abrir resumo das regras">📖 Guia Rápido</button>
+        <button class="icon-btn" id="soundToggleBtn" title="Ativar/Desativar sons">🔊 Som: ON</button>
+      </div>
+    </header>
+
+    <!-- TELA INICIAL -->
+    <section id="startScreen" class="card">
+      <div class="hero">
+        <h2>Quando usar <em>will</em> ou <em>going to</em>?</h2>
+        <p>
+          Os dois falam sobre o futuro em inglês, mas dependem da <strong>situação</strong>!
+          Veja o resumo rápido abaixo e teste seus reflexos no desafio.
+        </p>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-box will">
+          <span class="rule-badge">WILL</span>
+          <ul>
+            <li><strong>Decisão na hora:</strong> tomada espontaneamente durante a conversa.</li>
+            <li><strong>Promessas e ofertas:</strong> oferecer ajuda na hora ou prometer algo.</li>
+            <li><strong>Opinião / Palpite:</strong> sem prova concreta (<em>"I think..."</em>).</li>
+          </ul>
+          <div class="example-mini">
+            "The phone is ringing. I <strong>will</strong> answer it!" (Decidi agora)
+          </div>
+        </div>
+
+        <div class="rule-box going">
+          <span class="rule-badge">IS / AM / ARE GOING TO</span>
+          <ul>
+            <li><strong>Plano prévio:</strong> você já decidiu e planejou antes de falar.</li>
+            <li><strong>Evidência no presente:</strong> você está vendo sinais claros de que vai acontecer.</li>
+          </ul>
+          <div class="example-mini">
+            "Look at those black clouds! It <strong>is going to</strong> rain." (Evidência visual)
+          </div>
+        </div>
+      </div>
+
+      <div class="mode-selector">
+        <button class="btn-primary" onclick="startGame(8)">⚡ Rodada Rápida (8 perguntas)</button>
+        <button class="btn-secondary" onclick="startGame(16)">🏆 Desafio Completo (16 perguntas)</button>
+      </div>
+    </section>
+
+    <!-- TELA DO JOGO -->
+    <section id="gameScreen" class="card hidden">
+      <div class="stats-bar">
+        <div class="stat-pill">Questão <span id="qCounter">1/8</span></div>
+        <div class="stat-pill streak-pill" id="streakPill">🔥 Sequência: <span id="streakVal">0</span></div>
+        <div class="stat-pill">⭐ Pontos: <span id="scoreVal">0</span></div>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="context-box">
+        <span class="context-label">Situação / Contexto</span>
+        <span id="contextText">Carregando...</span>
+      </div>
+
+      <div class="sentence-box" id="sentenceBox">
+        <!-- Inserido via JS -->
+      </div>
+
+      <div class="options-grid" id="optionsGrid">
+        <button class="option-btn" id="optBtn0" onclick="selectAnswer(0)">
+          <span class="option-key">1</span>
+          <span class="option-text" id="optText0">will</span>
+        </button>
+        <button class="option-btn" id="optBtn1" onclick="selectAnswer(1)">
+          <span class="option-key">2</span>
+          <span class="option-text" id="optText1">is going to</span>
+        </button>
+      </div>
+
+      <div class="feedback-box" id="feedbackBox">
+        <div class="feedback-header">
+          <span class="feedback-title" id="feedbackTitle"></span>
+          <button class="speak-btn" id="speakBtn" onclick="speakSentence()">🔊 Ouvir frase em inglês</button>
+        </div>
+        <p class="feedback-rule" id="feedbackRule"></p>
+        <p class="translation" id="feedbackTranslation"></p>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Próxima Pergunta →</button>
+      </div>
+
+      <p class="shortcut-hint">Dica: use as teclas <strong>1</strong> ou <strong>2</strong> para responder e <strong>Enter</strong> para avançar.</p>
+    </section>
+
+    <!-- TELA FINAL -->
+    <section id="endScreen" class="card hidden">
+      <div class="result-hero">
+        <div class="trophy" id="resultTrophy">🏆</div>
+        <h2 id="resultHeadline">Parabéns!</h2>
+        <p id="resultSubtext" style="color: var(--muted);"></p>
+      </div>
+
+      <div class="score-grid">
+        <div class="score-card">
+          <div class="score-val" id="finalScore">0</div>
+          <div class="score-lbl">Pontos</div>
+        </div>
+        <div class="score-card">
+          <div class="score-val" id="finalAccuracy">0%</div>
+          <div class="score-lbl">Precisão</div>
+        </div>
+        <div class="score-card">
+          <div class="score-val" id="finalBestStreak">0</div>
+          <div class="score-lbl">Melhor Sequência</div>
+        </div>
+      </div>
+
+      <div id="reviewContainer" class="review-list hidden">
+        <h3>📝 Para revisar (onde você errou):</h3>
+        <div id="reviewItems"></div>
+      </div>
+
+      <div class="mode-selector" style="margin-top: 26px;">
+        <button class="btn-primary" onclick="restartSameMode()">🔄 Jogar Novamente</button>
+        <button class="btn-secondary" onclick="goHome()">🏠 Voltar ao Início</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL GUIA RÁPIDO -->
+  <div class="modal-backdrop" id="guideModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📖 Resumo: Will vs. Going To</h2>
+        <button class="close-modal" id="closeGuideBtn">✕</button>
+      </div>
+      <p style="color: var(--muted); margin-bottom: 14px; font-size: 0.95rem;">
+        O segredo não está na tradução literal (ambos significam "vai / vou"), mas no <strong>momento da decisão</strong> e nas <strong>evidências</strong>.
+      </p>
+
+      <div class="rule-box will" style="margin-bottom: 14px;">
+        <span class="rule-badge">Use WILL quando...</span>
+        <ul>
+          <li><strong>Decisão espontânea:</strong> você acabou de decidir enquanto falava.<br><em>"Está frio aqui." → "I will close the window."</em></li>
+          <li><strong>Oferta ou pedido de ajuda:</strong><br><em>"That bag looks heavy. I will carry it for you."</em></li>
+          <li><strong>Promessa ou recusa:</strong><br><em>"I promise I won't (will not) be late!"</em></li>
+          <li><strong>Previsão por opinião pessoal:</strong> (com <em>I think, probably, maybe</em>)<br><em>"I think she will love this gift."</em></li>
+        </ul>
+      </div>
+
+      <div class="rule-box going">
+        <span class="rule-badge">Use AM / IS / ARE GOING TO quando...</span>
+        <ul>
+          <li><strong>Plano ou intenção anterior:</strong> você já havia decidido antes da conversa.<br><em>"João bought the tickets. He is going to travel tomorrow."</em></li>
+          <li><strong>Evidência física no presente:</strong> dá para ver ou sentir que algo está prestes a acontecer.<br><em>"Look at that dog running at the cake! It is going to eat it!"</em></li>
+        </ul>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--muted); margin-top: 14px;">
+        <strong>Lembrete de conjugação:</strong> Use <em>am going to</em> (I), <em>is going to</em> (he, she, it) e <em>are going to</em> (you, we, they). Com <em>will</em>, a forma é igual para todas as pessoas!
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Banco de Questões (16 cenários variados)
+    const QUESTION_BANK = [
+      {
+        context: "Você olha para o céu e vê nuvens muito escuras e pesadas se aproximando.",
+        before: "Look at those dark clouds! It",
+        after: "rain soon.",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Previsão baseada em evidência visual clara no presente (as nuvens escuras).",
+        translation: "Olhe aquelas nuvens escuras! Vai chover logo."
+      },
+      {
+        context: "O telefone toca na sala enquanto vocês conversam. Você decide na hora levantar e atender.",
+        before: "Hold on, I",
+        after: "answer the phone!",
+        options: ["will", "am going to"],
+        correctIndex: 0,
+        rule: "Decisão espontânea tomada exatamente no momento da fala.",
+        translation: "Espere aí, eu vou atender o telefone!"
+      },
+      {
+        context: "Sua amiga Maria já comprou as passagens e reservou o hotel na semana passada.",
+        before: "Next month, Maria",
+        after: "travel to Italy.",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Plano prévio já organizado e decidido antes do momento da conversa.",
+        translation: "No próximo mês, a Maria vai viajar para a Itália."
+      },
+      {
+        context: "Você vê um amigo carregando caixas muito pesadas e oferece ajuda na hora.",
+        before: "Wait! I",
+        after: "help you carry those boxes.",
+        options: ["will", "am going to"],
+        correctIndex: 0,
+        rule: "Oferta espontânea de ajuda no momento em que você percebe a necessidade.",
+        translation: "Espere! Eu te ajudo (vou te ajudar) a carregar essas caixas."
+      },
+      {
+        context: "A bateria do seu celular está em 1% e a tela começou a escurecer.",
+        before: "Hurry up! My phone",
+        after: "turn off any second!",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Há uma evidência imediata e concreta no presente (1% de bateria).",
+        translation: "Rápido! Meu celular vai desligar a qualquer segundo!"
+      },
+      {
+        context: "Você está dando um palpite pessoal sobre quem vence a Copa, sem provas concretas.",
+        before: "I think Brazil",
+        after: "win the next championship.",
+        options: ["will", "is going to"],
+        correctIndex: 0,
+        rule: "Previsão baseada em opinião ou crença pessoal (muito comum após 'I think').",
+        translation: "Eu acho que o Brasil vai ganhar o próximo campeonato."
+      },
+      {
+        context: "Pedro economizou dinheiro o ano inteiro porque decidiu comprar uma moto nova amanhã.",
+        before: "Pedro",
+        after: "buy a new motorcycle tomorrow.",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Intenção e plano definidos previamente (ele já economizou para isso).",
+        translation: "O Pedro vai comprar uma moto nova amanhã."
+      },
+      {
+        context: "Você está no restaurante, abre o cardápio e decide naquele instante o que pedir ao garçom.",
+        before: "Hmm... I",
+        after: "have a lemonade, please.",
+        options: ["will", "am going to"],
+        correctIndex: 0,
+        rule: "Decisões feitas na hora em restaurantes ou lojas usam 'will'.",
+        translation: "Hmm... Vou querer uma limonada, por favor."
+      },
+      {
+        context: "Um garoto está andando de bicicleta olhando para trás, bem na direção de um muro.",
+        before: "Watch out! He",
+        after: "crash into that wall!",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Algo prestes a acontecer com evidência física visível agora.",
+        translation: "Cuidado! Ele vai bater naquele muro!"
+      },
+      {
+        context: "Você faz uma promessa sincera para sua melhor amiga.",
+        before: "I promise I",
+        after: "tell anyone your secret.",
+        options: ["won't (will not)", "am not going to"],
+        correctIndex: 0,
+        rule: "Promessas e juramentos sempre usam 'will' (ou 'won't' na negativa).",
+        translation: "Eu prometo que não vou contar seu segredo para ninguém."
+      },
+      {
+        context: "Ana já se matriculou na faculdade de arquitetura e comprou o material.",
+        before: "Ana",
+        after: "study architecture next semester.",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Plano concreto e já decidido antes de falar.",
+        translation: "A Ana vai estudar arquitetura no próximo semestre."
+      },
+      {
+        context: "Um amigo percebe que esqueceu a carteira em casa na hora do almoço. Você reage imediatamente.",
+        before: "Don't worry, I",
+        after: "pay for your lunch today.",
+        options: ["will", "am going to"],
+        correctIndex: 0,
+        rule: "Decisão e oferta espontânea no momento da fala.",
+        translation: "Não se preocupe, eu pago o seu almoço hoje."
+      },
+      {
+        context: "O placar marca 4 a 0 para o time adversário e faltam apenas 30 segundos para o apito final.",
+        before: "Look at the score. Our team",
+        after: "lose this game.",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Previsão lógica baseada em uma evidência concreta presente (o placar e o tempo).",
+        translation: "Olhe o placar. Nosso time vai perder esse jogo."
+      },
+      {
+        context: "Você está tentando consolar um amigo nervoso dizendo o que acredita sobre o futuro.",
+        before: "Relax! Everything",
+        after: "be okay in the end.",
+        options: ["will", "is going to"],
+        correctIndex: 0,
+        rule: "Crença ou tranquilização sobre o futuro sem evidência física específica.",
+        translation: "Relaxe! Tudo vai ficar bem no final."
+      },
+      {
+        context: "A empresa já assinou o contrato do novo escritório e marcou a mudança para julho.",
+        before: "The company",
+        after: "move to a new building in July.",
+        options: ["will", "is going to"],
+        correctIndex: 1,
+        rule: "Ação planejada e confirmada antecipadamente.",
+        translation: "A empresa vai se mudar para um prédio novo em julho."
+      },
+      {
+        context: "Está muito abafado na sala. Você percebe agora e avisa que vai abrir a janela.",
+        before: "It's so hot in here. I",
+        after: "open the window.",
+        options: ["will", "am going to"],
+        correctIndex: 0,
+        rule: "Ação decidida no exato momento em que você percebe o calor.",
+        translation: "Está tão quente aqui. Eu vou abrir a janela."
+      }
+    ];
+
+    // Estado do jogo
+    let gameQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let bestStreak = 0;
+    let correctCount = 0;
+    let answered = false;
+    let lastModeCount = 8;
+    let wrongAnswers = [];
+    let soundEnabled = true;
+
+    // Web Audio API para efeitos sonoros leves sem arquivos externos
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function playTone(type) {
+      if (!soundEnabled || !AudioCtx) return;
+      try {
+        if (!audioCtx) audioCtx = new AudioCtx();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'correct') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now); // C5
+          osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.12); // G5
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(240, now);
+          osc.frequency.linearRampToValueAtTime(170, now + 0.2);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        }
+      } catch (e) {
+        // Ignora caso áudio seja bloqueado
+      }
+    }
+
+    // Embaralhar array (Fisher-Yates)
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    // Iniciar jogo
+    function startGame(count) {
+      lastModeCount = count;
+      gameQuestions = shuffle(QUESTION_BANK).slice(0, count);
+      currentIndex = 0;
+      score = 0;
+      streak = 0;
+      bestStreak = 0;
+      correctCount = 0;
+      wrongAnswers = [];
+
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('endScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+
+      renderQuestion();
+    }
+
+    function restartSameMode() {
+      startGame(lastModeCount);
+    }
+
+    function goHome() {
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('endScreen').classList.add('hidden');
+      document.getElementById('startScreen').classList.remove('hidden');
+    }
+
+    // Renderizar pergunta atual
+    function renderQuestion() {
+      answered = false;
+      const q = gameQuestions[currentIndex];
+      const total = gameQuestions.length;
+
+      document.getElementById('qCounter').textContent = `${currentIndex + 1}/${total}`;
+      document.getElementById('scoreVal').textContent = score;
+      document.getElementById('streakVal').textContent = streak;
+
+      const streakPill = document.getElementById('streakPill');
+      if (streak >= 2) streakPill.classList.add('active');
+      else streakPill.classList.remove('active');
+
+      const progressPct = (currentIndex / total) * 100;
+      document.getElementById('progressFill').style.width = `${progressPct}%`;
+
+      document.getElementById('contextText').textContent = q.context;
+      document.getElementById('sentenceBox').innerHTML =
+        `${q.before} <span class="blank" id="blankSlot">______</span> ${q.after}`;
+
+      // Reset botões
+      [0, 1].forEach(i => {
+        const btn = document.getElementById(`optBtn${i}`);
+        btn.disabled = false;
+        btn.className = 'option-btn';
+        document.getElementById(`optText${i}`).textContent = q.options[i];
+      });
+
+      const fb = document.getElementById('feedbackBox');
+      fb.className = 'feedback-box';
+    }
+
+    // Selecionar resposta
+    function selectAnswer(chosenIndex) {
+      if (answered) return;
+      answered = true;
+
+      const q = gameQuestions[currentIndex];
+      const isCorrect = chosenIndex === q.correctIndex;
+      const blankSlot = document.getElementById('blankSlot');
+      const cleanAnswer = q.options[q.correctIndex].replace(' (will not)', '');
+
+      // Desabilita botões
+      [0, 1].forEach(i => {
+        document.getElementById(`optBtn${i}`).disabled = true;
+      });
+
+      const chosenBtn = document.getElementById(`optBtn${chosenIndex}`);
+      const correctBtn = document.getElementById(`optBtn${q.correctIndex}`);
+
+      const fb = document.getElementById('feedbackBox');
+      const fbTitle = document.getElementById('feedbackTitle');
+
+      if (isCorrect) {
+        playTone('correct');
+        chosenBtn.classList.add('correct');
+        blankSlot.textContent = cleanAnswer;
+        blankSlot.classList.add('filled-correct');
+
+        streak++;
+        if (streak > bestStreak) bestStreak = streak;
+        correctCount++;
+        const pointsEarned = 10 + (streak > 1 ? (streak - 1) * 5 : 0);
+        score += pointsEarned;
+
+        fb.className = 'feedback-box show correct';
+        fbTitle.textContent = streak >= 2
+          ? `✅ Exato! (+${pointsEarned} pts • Combo ${streak}x 🔥)`
+          : `✅ Resposta Certa! (+${pointsEarned} pts)`;
+      } else {
+        playTone('wrong');
+        chosenBtn.classList.add('wrong');
+        correctBtn.classList.add('correct');
+        blankSlot.textContent = cleanAnswer;
+        blankSlot.classList.add('filled-wrong');
+
+        streak = 0;
+        wrongAnswers.push({
+          sentence: `${q.before} <strong>${cleanAnswer}</strong> ${q.after}`,
+          chosen: q.options[chosenIndex],
+          rule: q.rule
+        });
+
+        fb.className = 'feedback-box show wrong';
+        fbTitle.textContent = `❌ Ops! O correto é "${cleanAnswer}"`;
+      }
+
+      document.getElementById('scoreVal').textContent = score;
+      document.getElementById('streakVal').textContent = streak;
+      document.getElementById('feedbackRule').textContent = `Por quê? ${q.rule}`;
+      document.getElementById('feedbackTranslation').textContent = `Tradução: "${q.translation}"`;
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.textContent = currentIndex === gameQuestions.length - 1
+        ? 'Ver Resultado Final 🏆'
+        : 'Próxima Pergunta →';
+
+      // Atualiza barra ao responder a última
+      if (currentIndex === gameQuestions.length - 1) {
+        document.getElementById('progressFill').style.width = '100%';
+      }
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex < gameQuestions.length) {
+        renderQuestion();
+      } else {
+        showEndScreen();
+      }
+    }
+
+    // Falar frase completa em inglês usando Web Speech API
+    function speakSentence() {
+      if (!('speechSynthesis' in window)) {
+        alert('Seu navegador não suporta leitura de áudio.');
+        return;
+      }
+      const q = gameQuestions[currentIndex];
+      const cleanAnswer = q.options[q.correctIndex].replace(' (will not)', '');
+      const fullText = `${q.before} ${cleanAnswer} ${q.after}`;
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(fullText);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.92;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Tela Final
+    function showEndScreen() {
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('endScreen').classList.remove('hidden');
+
+      const total = gameQuestions.length;
+      const accuracy = Math.round((correctCount / total) * 100);
+
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('finalAccuracy').textContent = `${accuracy}%`;
+      document.getElementById('finalBestStreak').textContent = `${bestStreak}x`;
+
+      const trophy = document.getElementById('resultTrophy');
+      const headline = document.getElementById('resultHeadline');
+      const subtext = document.getElementById('resultSubtext');
+
+      if (accuracy === 100) {
+        trophy.textContent = '👑';
+        headline.textContent = 'Perfeito! Você dominou!';
+        subtext.textContent = 'Você acertou todas as situações entre Will e Going To.';
+      } else if (accuracy >= 75) {
+        trophy.textContent = '🏆';
+        headline.textContent = 'Excelente trabalho!';
+        subtext.textContent = `Você acertou ${correctCount} de ${total} questões.`;
+      } else if (accuracy >= 50) {
+        trophy.textContent = '👏';
+        headline.textContent = 'Bom progresso!';
+        subtext.textContent = `Você acertou ${correctCount} de ${total}. Veja as dicas abaixo e tente de novo!`;
+      } else {
+        trophy.textContent = '📚';
+        headline.textContent = 'Continue praticando!';
+        subtext.textContent = `Você acertou ${correctCount} de ${total}. Dê uma olhada no Guia Rápido e jogue novamente.`;
+      }
+
+      const reviewContainer = document.getElementById('reviewContainer');
+      const reviewItems = document.getElementById('reviewItems');
+      reviewItems.innerHTML = '';
+
+      if (wrongAnswers.length > 0) {
+        reviewContainer.classList.remove('hidden');
+        wrongAnswers.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'review-item';
+          div.innerHTML = `
+            <div style="margin-bottom: 4px;">${item.sentence}</div>
+            <div style="font-size: 0.83rem; color: #64748b;">
+              Você marcou: <em>${item.chosen}</em> • <strong>Motivo:</strong> ${item.rule}
+            </div>
+          `;
+          reviewItems.appendChild(div);
+        });
+      } else {
+        reviewContainer.classList.add('hidden');
+      }
+    }
+
+    // Modal e Som
+    const guideModal = document.getElementById('guideModal');
+    document.getElementById('openGuideBtn').addEventListener('click', () => {
+      guideModal.classList.add('open');
+    });
+    document.getElementById('closeGuideBtn').addEventListener('click', () => {
+      guideModal.classList.remove('open');
+    });
+    guideModal.addEventListener('click', (e) => {
+      if (e.target === guideModal) guideModal.classList.remove('open');
+    });
+
+    document.getElementById('soundToggleBtn').addEventListener('click', (e) => {
+      soundEnabled = !soundEnabled;
+      e.currentTarget.textContent = soundEnabled ? '🔊 Som: ON' : '🔇 Som: OFF';
+    });
+
+    // Atalhos de teclado
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('gameScreen').classList.contains('hidden')) return;
+      if (guideModal.classList.contains('open')) return;
+
+      if (!answered) {
+        if (e.key === '1') selectAnswer(0);
+        if (e.key === '2') selectAnswer(1);
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        nextQuestion();
+      }
+    });
+  </script>
+</body>
+</html>
